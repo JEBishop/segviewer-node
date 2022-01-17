@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<head>
+    <title>Authenticating...</title>
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const auth_code = urlParams.get("code");
+        localStorage.setItem("auth_code", auth_code);
+        location.href = "https://segviewer.com/"
+    </script>
+</head>
+<body></body>
+</html>

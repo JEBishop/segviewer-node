@@ -1,0 +1,14 @@
+{
+  "name": "segviewer-node",
+  "version": "1.0.0",
+  "description": "SegViewer",
+  "author": "Josh Bishop",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.16.1"
+  }
+}
+

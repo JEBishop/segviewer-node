@@ -1,0 +1,18 @@
+version: '3'
+
+services:
+  segviewer-node:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: segviewer-node
+    container_name: segviewer-node
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      - NODE_ENV=$NODE_ENV
+      - PORT=$PORT
+      - CLIENT_ID=$CLIENT_ID
+      - CLIENT_SECRET=$CLIENT_SECRET
+    ports:
+      - "80:8080"

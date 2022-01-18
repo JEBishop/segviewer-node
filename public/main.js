@@ -17,27 +17,29 @@ function createMap() {
 
 $(document).ready(function() {
     const token = localStorage.getItem("access_token");
-    if(token === null) {
-        handleAuthCode();
-    }
-    else {
+    if(token !== null) {
         reAuthorize();
     }
 
-    function handleAuthCode() {
-        const auth_code = localStorage.getItem("auth_code");
-        // exchange authorization code for an access token
-        if (auth_code !== null) {
-            // pass auth code to node API to do perform auth
-            // receive access_token and refresh_token back, add to localstorage
-            // getStarredSegments
-        }
-    }
-
     function reAuthorize() {
-        // pass refresh_token to node API
-        // receive access_token and refresh_token back, add to localstorage
-        // getStarredSegments
+        const auth_code = localStorage.getItem("refresh_token");
+        $.ajax({
+            url: `https://segviewer-staging.herokuapp.com/api/auth/${auth_code}/refresh_token`,
+            method: "GET",    
+            dataType: "json",
+            error: function(xhr, status, error) {
+                console.log("readyState: " + xhr.readyState);
+                console.log("responseText: "+ xhr.responseText);
+                console.log("status: " + xhr.status);
+                console.log("text status: " + status);
+                console.log("error: " + error);
+            },
+            complete: function(response) {
+                localStorage.setItem("access_token", response["responseJSON"]["access_token"]);
+                localStorage.setItem("refresh_token", response["responseJSON"]["refresh_token"]);
+                getStarredSegments(response["responseJSON"]["access_token"]);
+            }
+        });
     }
 
     function getStarredSegments(token) {
@@ -70,7 +72,7 @@ $(document).ready(function() {
                         polyline: ""
                     }
                     latlngList.push(new google.maps.LatLng(segment.start_lat, segment.start_lng));
-                    getPolyline(token, segment);
+                    mapSegment(getPolyline(token, segment));
                 }
                 getNewCenter(latlngList);
             }
@@ -96,13 +98,14 @@ $(document).ready(function() {
                 complete: function(response) {
                     segment.polyline = response["responseJSON"]["map"]["polyline"];
                     localStorage.setItem(segment.id, JSON.stringify(segment));
+                    getPolyline(token, segment);
                 }
             });
-        } 
-        else {
+        } else {
             segment = JSON.parse(localStorage.getItem(segment.id));
         }
-        mapSegment(segment);
+        
+        return segment;
     }
 
     function mapSegment(segment) {

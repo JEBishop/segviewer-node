@@ -7,21 +7,23 @@
         const auth_code = urlParams.get("code");
         localStorage.setItem("auth_code", auth_code);
         $.ajax({
-            url: `https://segviewer-staging.herokuapp.com/api/auth?code=${auth_code}`,
-            method: "POST",    
+            url: `https://segviewer-staging.herokuapp.com/api/auth/${auth_code}/authorization_code`,
+            method: "GET",    
             dataType: "json",
             error: function(xhr, status, error) {
-                console.log(`error:${xhr.responseText}`);
-                console.log(`error:${xhr.responseJSON}`);
-                console.log(error);
+                console.log("readyState: " + xhr.readyState);
+                console.log("responseText: "+ xhr.responseText);
+                console.log("status: " + xhr.status);
+                console.log("text status: " + status);
+                console.log("error: " + error);
             },
             complete: function(response) {
                 localStorage.setItem("access_token", response["responseJSON"]["access_token"]);
                 localStorage.setItem("refresh_token", response["responseJSON"]["refresh_token"]);
+                //location.href = "https://segviewer.com/"
+                location.href = "https://segviewer-staging.herokuapp.com/"
             }
         });
-        //location.href = "https://segviewer.com/"
-        location.href = "https://segviewer-staging.herokuapp.com/"
     </script>
 </head>
 <body></body>

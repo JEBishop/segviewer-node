@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<head>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <title>Authenticating...</title>
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const auth_code = urlParams.get("code");
+        localStorage.setItem("auth_code", auth_code);
+        $.ajax({
+            url: `https://segviewer-staging.herokuapp.com/api/auth?code=${auth_code}`,
+            method: "POST",    
+            dataType: "json",
+            error: function(xhr, status, error) {
+                console.log(`error:${xhr.responseText}`);
+                console.log(`error:${xhr.responseJSON}`);
+                console.log(error);
+            },
+            complete: function(response) {
+                localStorage.setItem("access_token", response["responseJSON"]["access_token"]);
+                localStorage.setItem("refresh_token", response["responseJSON"]["refresh_token"]);
+            }
+        });
+        //location.href = "https://segviewer.com/"
+        location.href = "https://segviewer-staging.herokuapp.com/"
+    </script>
+</head>
+<body></body>
+</html>

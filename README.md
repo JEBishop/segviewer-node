@@ -8,7 +8,5 @@ I personally like to plan bike rides to hit many of these segments in one ride, 
 
 https://segviewer.com requires a user to login via oauth2 to their Strava account, before using the Strava API to fetch all of the user's saved segments and display them on a map.
 
-This is done entirely client-side. Not the most secure for sharing API secrets, but 0 maintenance and hosted with GitHub Pages.
-
 Example:
 ![Example web view](https://user-images.githubusercontent.com/6465753/141688013-250ee219-3d67-4062-bc74-aa3c5bef7647.png)

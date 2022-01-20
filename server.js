@@ -17,15 +17,15 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use("/",router);
 
-router.get("/api/auth/:code/:grantType", async function(req, res) {
+router.get("/api/auth/:code/:grant_type", async function(req, res) {
 	var result = {
 		access_token: "",
 		refresh_token: ""
 	};
 	  
-	var auth_type = "code"
 	const auth_code = req.params.code;
-	const grant_type = req.params.grantType;
+	const grant_type = req.params.grant_type;
+	var auth_type = "code"
 	if(grant_type === "refresh_token") {
 		auth_type = grant_type;
 	}
@@ -38,7 +38,7 @@ router.get("/api/auth/:code/:grantType", async function(req, res) {
 	}).catch(error => {
   		console.log("error: " + error);
 	});
-	
+
 	res.send(JSON.stringify(result));
 });
 

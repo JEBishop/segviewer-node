@@ -24,7 +24,7 @@ $(document).ready(function() {
     function reAuthorize() {
         const auth_code = localStorage.getItem("refresh_token");
         $.ajax({
-            url: `https://segviewer-staging.herokuapp.com/api/auth/${auth_code}/refresh_token`,
+            url: `https://segviewer.com/api/auth/${auth_code}/refresh_token`,
             method: "GET",    
             dataType: "json",
             error: function(xhr, status, error) {
@@ -84,7 +84,7 @@ $(document).ready(function() {
             this is going to hit the 100 calls/15 min rate limit real fast
             store id and polyline locally to save some calls on repeat users 
         */
-        if(localStorage.getItem(segment.id) === null) {
+        if(localStorage.getItem(segment.id) === null) { // we don't have the segment cached, retrieve it from the API
             $.ajax({
                 url: `https://www.strava.com/api/v3/segments/${segment.id}`,
                 method: "GET",    
@@ -102,9 +102,9 @@ $(document).ready(function() {
                 }
             });
         } else {
-            segment = JSON.parse(localStorage.getItem(segment.id));
+            segment = JSON.parse(localStorage.getItem(segment.id)); // we do have it cached, load it
         }
-        
+
         return segment;
     }
 
@@ -177,6 +177,7 @@ $(document).ready(function() {
     
     function getNewCenter(latlng) {
         var bounds = new google.maps.LatLngBounds();
+
         for(var i = 0; i < latlng.length; i++) {
             bounds.extend(latlng[i]);
         }
